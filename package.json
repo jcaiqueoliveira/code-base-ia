@@ -1,0 +1,44 @@
+{
+  "name": "example-api",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "check-types": "npm run check-types --workspaces --if-present",
+    "dev:server": "npm run dev --workspace server --",
+    "db:push": "npm run db:push --workspace @example-api/db --",
+    "db:studio": "npm run db:studio --workspace @example-api/db --",
+    "db:generate": "npm run db:generate --workspace @example-api/db --",
+    "db:migrate": "npm run db:migrate --workspace @example-api/db --",
+    "db:start": "docker compose up -d postgres",
+    "db:watch": "docker compose up postgres",
+    "db:stop": "docker compose stop postgres",
+    "db:down": "docker compose down postgres",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "env:generate": "varlock codegen --path ./apps/server/ && varlock codegen --path ./packages/db/",
+    "postinstall": "varlock codegen --path ./apps/server/ && varlock codegen --path ./packages/db/",
+    "check": "biome check --write ."
+  },
+  "dependencies": {
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.12",
+    "@example-api/config": "*",
+    "@types/node": "^26.4.1",
+    "typescript": "^6.0.3",
+    "varlock": "1.18.0"
+  },
+  "packageManager": "npm@11.19.0",
+  "allowScripts": {
+    "esbuild": true
+  }
+}
