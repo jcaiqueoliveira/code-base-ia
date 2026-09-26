@@ -51,3 +51,33 @@ to clean up, simplify, or review code for style — use the skill in
 [.claude/skills/code-standards/](.claude/skills/code-standards/SKILL.md); it is the
 reference for method length, parameters, variable scope, error handling, comments, magic
 numbers, nesting, and ternaries. Claude loads it automatically when a task touches code.
+
+## Engineering Principles
+
+`code-standards` governs *style*. The principle skills in `.claude/skills/principle-*` govern *how to
+think* about a change. Load the leaf skill in full before applying it, and name in the report which
+principles shaped a decision and what they changed.
+
+| When | Load |
+| --- | --- |
+| Before writing logic: types, tables, what concurrent writers share | `principle-foundational-thinking`, `principle-model-the-domain` |
+| Any `.ts` file | `typescript-best-practices` → `principle-type-system-discipline` |
+| Request input, env, webhook payloads, DB rows — anything crossing in | `principle-boundary-discipline` |
+| Anything that can be retried: uploads, webhooks, migrations | `principle-make-operations-idempotent` |
+| Two writers on one row or key | `principle-separate-before-serializing-shared-state` |
+| Writing or keeping a test | `principle-test-behavior-not-implementation`, `tdd` |
+| Before declaring anything done | `principle-prove-it-works` |
+| Multi-step work, ordering commits | `principle-sequence-verifiable-units`, `principle-build-the-lever` |
+| Sizing a diff, tempted to add a layer | `principle-laziness-protocol`, `principle-subtract-before-you-add`, `principle-minimize-reader-load` |
+| Debugging | `principle-fix-root-causes`; after two failed fixes on one premise, `principle-attack-the-premise` |
+| New requirement into existing design | `principle-redesign-from-first-principles`, `principle-migrate-callers-then-delete-legacy-apis` |
+| Architectural fork with no precedent | `principle-exhaust-the-design-space` |
+| API or UX tradeoffs | `principle-experience-first` |
+| Same correction twice | `principle-encode-lessons-in-structure` |
+| Reversible work vs. asking | `principle-never-block-on-the-human` |
+| Long runs, big outputs, planned rewrites | `principle-guard-the-context-window`, `principle-outcome-oriented-execution` |
+
+These skills come from Lauren Tan's [`pstack`](https://github.com/cursor/plugins/tree/main/pstack)
+(MIT, see `.claude/skills/PSTACK-LICENSE`). They were adapted for Claude Code: the Cursor-only
+`disable-model-invocation` flag is removed so Claude can load them on its own, and two references to
+Cursor-specific tooling are reworded.
