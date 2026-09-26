@@ -52,6 +52,16 @@ to clean up, simplify, or review code for style — use the skill in
 reference for method length, parameters, variable scope, error handling, comments, magic
 numbers, nesting, and ternaries. Claude loads it automatically when a task touches code.
 
+### No comments in code
+
+`npm run lint:comments` fails on any comment in tracked `.ts`/`.js`/`.sh`/`.sql` files. It uses the
+TypeScript parser, so `//` inside a string, URL, regex or template does not count, and a `/* */` in
+the middle of an expression does. Only tool directives pass: `biome-ignore`, `@ts-expect-error`, a
+shebang, and Drizzle's `--> statement-breakpoint`.
+
+It also runs as a `pre-push` hook (`.githooks/pre-push`, installed by `npm install` through the
+`prepare` script). The hook lints the exact commits being pushed, not the working tree.
+
 ## Engineering Principles
 
 `code-standards` governs *style*. The principle skills in `.claude/skills/principle-*` govern *how to

@@ -47,9 +47,9 @@ Apply these while writing. Each links to a worked before/after in
    single train of thought. If you feel the need to separate "sections" of a method with
    blank lines, that's a signal to extract those sections into their own functions
    (see rule 1).
-6. **Avoid unnecessary comments.** A comment that just restates the code is noise that
-   drifts out of date. Make the code self-explanatory through good names instead. Keep
-   comments that explain *why* something non-obvious is done, not *what* the line does.
+6. **No comments.** `npm run lint:comments` fails on any comment in code. Say what the code
+   does through names, types and tests; put the *why* in the commit message or the PR. Only
+   tool directives (`biome-ignore`, `@ts-expect-error`) are allowed.
 7. **Name meaningful literals.** A bare `3` or `"paid"` in a condition hides intent.
    Promote significant numbers and strings to named constants (`MAX_LOGIN_ATTEMPTS`) so
    the meaning is explicit and the value has one place to change.
@@ -77,7 +77,7 @@ Apply these while writing. Each links to a worked before/after in
 A change isn't done until the code you touched satisfies the checklist: methods stay
 short and single-purpose, signatures take few/grouped parameters, variables sit next to
 their use, no errors are silently swallowed, method bodies have no blank-line padding,
-comments earn their place, literals are named, branching is shallow with early returns,
+there are no comments, literals are named, branching is shallow with early returns,
 and no ternary is nested. If you left a rule deliberately unapplied, say so and why.
 
 ## Reference

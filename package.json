@@ -25,7 +25,9 @@
     "docker:logs": "docker compose logs -f",
     "env:generate": "varlock codegen --path ./apps/server/ && varlock codegen --path ./packages/db/",
     "postinstall": "varlock codegen --path ./apps/server/ && varlock codegen --path ./packages/db/",
-    "check": "biome check --write ."
+    "check": "biome check --write .",
+    "lint:comments": "node scripts/no-comments.mjs",
+    "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true"
   },
   "dependencies": {
     "zod": "^4.5.4"

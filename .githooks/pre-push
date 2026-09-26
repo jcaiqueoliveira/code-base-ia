@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly NO_COMMIT=0000000000000000000000000000000000000000
+readonly LINT_PATH=scripts/no-comments.mjs
+readonly ROOT=$(git rev-parse --show-toplevel)
+readonly LINT_COPY="$ROOT/node_modules/.cache/no-comments.mjs"
+
+lint_pushed_commit() {
+	local sha=$1
+	if ! git cat-file -e "$sha:$LINT_PATH" 2>/dev/null; then return 0; fi
+	if [[ ! -d "$ROOT/node_modules" ]]; then
+		echo "pre-push: run npm install so the comment lint can run" >&2
+		return 1
+	fi
+	mkdir -p "$(dirname "$LINT_COPY")"
+	git show "$sha:$LINT_PATH" >"$LINT_COPY"
+	(cd "$ROOT" && env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE -u GIT_PREFIX node "$LINT_COPY" --rev "$sha")
+}
+
+while read -r _local_ref local_sha _remote_ref _remote_sha; do
+	[[ "$local_sha" == "$NO_COMMIT" ]] && continue
+	lint_pushed_commit "$local_sha" || { echo "pre-push: push blocked by the comment lint ($local_sha)" >&2; exit 1; }
+done
+exit 0
